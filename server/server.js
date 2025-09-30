@@ -13,7 +13,7 @@ app.use(cors({
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/msaconnect')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27959/msaconnect')
   .then(() => console.log('Connected to MongoDB'))
   .catch((error) => console.error('MongoDB connection error:', error));
 
