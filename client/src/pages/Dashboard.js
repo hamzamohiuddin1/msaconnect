@@ -121,9 +121,9 @@ const Dashboard = () => {
           <div className="welcome-icon">
             <BookOpen className="w-8 h-8 text-blue-600" />
           </div>
-          <h3>Welcome to MSAConnect, {user?.name?.split(' ')[0]}!</h3>
+          <h3>Welcome to ILM+, {user?.name?.split(' ')[0]}!</h3>
           <p>
-            Start by adding your classes to connect with fellow Muslim students 
+            Start by adding your classes to connect with fellow students 
             in your courses. Build your network and find study partners!
           </p>
           <button

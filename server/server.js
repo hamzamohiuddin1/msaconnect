@@ -23,7 +23,7 @@ app.use('/api/classes', require('./routes/classes'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ message: 'MSAConnect API is running!', timestamp: new Date().toISOString() });
+  res.json({ message: 'ILM+ API is running!', timestamp: new Date().toISOString() });
 });
 
 // Error handling middleware

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { X, Users, Mail, Phone, Copy, User, BookOpen } from 'lucide-react';
+import { X, Users, User } from 'lucide-react';
 import { classesAPI } from '../utils/api';
 import toast from 'react-hot-toast';
 import ContactModal from './ContactModal';
+import '../styles/FindClassmatesModal.css';
 
 const FindClassmatesModal = ({ isOpen, onClose, classInfo }) => {
   const [classmates, setClassmates] = useState([]);
@@ -51,55 +52,47 @@ const FindClassmatesModal = ({ isOpen, onClose, classInfo }) => {
 
   return (
     <>
-      <div className="modal-overlay" onClick={handleOverlayClick}>
-        <div className="modal" style={{ maxWidth: '600px' }}>
-          <div className="modal-header">
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900">Find Classmates</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                {classInfo?.courseId} - Section {classInfo?.sectionCode}
-              </p>
+      <div className="find-classmates-modal-overlay" onClick={handleOverlayClick}>
+        <div className="find-classmates-modal">
+          <div className="find-classmates-header">
+            <div className="find-classmates-header-content">
+              <h3>Find Classmates</h3>
+              <p>{classInfo?.courseId} - Section {classInfo?.sectionCode}</p>
             </div>
-            <button
-              onClick={onClose}
-              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-            >
+            <button onClick={onClose} className="find-classmates-close">
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="modal-body">
+          <div className="find-classmates-body">
             {loading && (
-              <div className="text-center py-8">
-                <div className="loading mb-4"></div>
-                <p className="text-gray-600">Searching for classmates...</p>
+              <div className="find-classmates-loading">
+                <div className="find-classmates-loading-spinner"></div>
+                <p>Searching for classmates...</p>
               </div>
             )}
 
             {error && (
-              <div className="text-center py-8">
-                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="find-classmates-error">
+                <div className="find-classmates-error-icon">
                   <X className="w-8 h-8 text-red-600" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Error</h4>
-                <p className="text-gray-600 mb-4">{error}</p>
-                <button
-                  onClick={findClassmates}
-                  className="btn btn-primary"
-                >
+                <h4>Error</h4>
+                <p>{error}</p>
+                <button onClick={findClassmates} className="btn btn-primary">
                   Try Again
                 </button>
               </div>
             )}
 
             {!loading && !error && classmates.length === 0 && (
-              <div className="text-center py-8">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="find-classmates-empty">
+                <div className="find-classmates-empty-icon">
                   <Users className="w-8 h-8 text-gray-400" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">No Classmates Found</h4>
-                <p className="text-gray-600">
-                  No other MSA members have added this class yet. Be the first to connect 
+                <h4>No Classmates Found</h4>
+                <p>
+                  No other students have added this class yet. Be the first to connect 
                   when more students join!
                 </p>
               </div>
@@ -107,30 +100,30 @@ const FindClassmatesModal = ({ isOpen, onClose, classInfo }) => {
 
             {!loading && !error && classmates.length > 0 && (
               <div>
-                <div className="flex items-center gap-2 mb-4">
+                <div className="find-classmates-results-header">
                   <Users className="w-5 h-5 text-blue-600" />
-                  <span className="font-medium text-gray-900">
+                  <span className="find-classmates-results-count">
                     {classmates.length} classmate{classmates.length !== 1 ? 's' : ''} found
                   </span>
                 </div>
 
-                <div className="space-y-3 max-h-96 overflow-y-auto">
+                <div className="find-classmates-list">
                   {classmates.map((classmate) => (
                     <div
                       key={classmate._id}
                       onClick={() => handleClassmateClick(classmate)}
-                      className="p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-all"
+                      className="find-classmates-item"
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center">
+                      <div className="find-classmates-item-content">
+                        <div className="find-classmates-item-left">
+                          <div className="find-classmates-item-avatar">
                             <User className="w-5 h-5 text-blue-600" />
                           </div>
-                          <div>
-                            <h5 className="font-semibold text-gray-900">
+                          <div className="find-classmates-item-info">
+                            <h5 className="find-classmates-item-name">
                               {classmate.name}
                             </h5>
-                            <div className="flex items-center gap-4 text-sm text-gray-600">
+                            <div className="find-classmates-item-meta">
                               <span>{classmate.major}</span>
                               <span>•</span>
                               <span>{classmate.year}</span>
@@ -139,11 +132,11 @@ const FindClassmatesModal = ({ isOpen, onClose, classInfo }) => {
                             </div>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="text-sm font-medium text-blue-600">
+                        <div className="find-classmates-item-right">
+                          <div className="find-classmates-item-section">
                             Section {classmate.sectionCode}
                           </div>
-                          <div className="text-xs text-gray-500">
+                          <div className="find-classmates-item-hint">
                             Click to view contact
                           </div>
                         </div>
@@ -152,26 +145,19 @@ const FindClassmatesModal = ({ isOpen, onClose, classInfo }) => {
                   ))}
                 </div>
 
-                <div className="mt-6 p-4 bg-gold/10 border border-gold/20 rounded-lg">
-                  <h5 className="font-medium text-gray-900 mb-2">
-                    🤝 Connect Respectfully
-                  </h5>
-                  <p className="text-sm text-gray-600">
+                <div className="find-classmates-info-banner">
+                  <h5>🤝 Connect Respectfully</h5>
+                  <p>
                     Remember to be respectful when reaching out to classmates. 
-                    Introduce yourself and mention you found them through MSAConnect.
+                    Introduce yourself and mention you found them through ILM+.
                   </p>
                 </div>
               </div>
             )}
           </div>
 
-          <div className="modal-footer">
-            <button
-              onClick={onClose}
-              className="btn btn-outline"
-            >
-              Close
-            </button>
+          <div className="find-classmates-footer">
+            <button onClick={onClose}>Close</button>
           </div>
         </div>
       </div>

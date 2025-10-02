@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import '../styles/ClassModal.css';
 
 const ClassModal = ({ isOpen, onClose, onSave, editingClass }) => {
   const [formData, setFormData] = useState({
@@ -80,58 +81,53 @@ const ClassModal = ({ isOpen, onClose, onSave, editingClass }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={handleOverlayClick}>
-      <div className="modal">
-        <div className="modal-header">
-          <h3 className="text-xl font-semibold text-gray-900">
-            {editingClass ? 'Edit Class' : 'Add New Class'}
-          </h3>
-          <button
-            onClick={onClose}
-            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-          >
+    <div className="class-modal-overlay" onClick={handleOverlayClick}>
+      <div className="class-modal">
+        <div className="class-modal-header">
+          <h3>{editingClass ? 'Edit Class' : 'Add New Class'}</h3>
+          <button onClick={onClose} className="class-modal-close">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="modal-body space-y-6">
-            <div className="form-group">
-              <label className="form-label">Course ID</label>
+          <div className="class-modal-body">
+            <div className="class-modal-form-group">
+              <label className="class-modal-label">Course ID</label>
               <input
                 type="text"
                 name="courseId"
                 value={formData.courseId}
                 onChange={handleChange}
-                className={`input ${errors.courseId ? 'error' : ''}`}
+                className={`class-modal-input ${errors.courseId ? 'error' : ''}`}
                 placeholder="e.g., CSE 101, MATH 20A, CHEM 6A"
                 autoFocus
               />
-              {errors.courseId && <div className="form-error">{errors.courseId}</div>}
-              <p className="text-xs text-gray-500 mt-1">
+              {errors.courseId && <span className="class-modal-error">{errors.courseId}</span>}
+              <span className="class-modal-hint">
                 Enter the course department and number (e.g., CSE 101, MATH 20A)
-              </p>
+              </span>
             </div>
 
-            <div className="form-group">
-              <label className="form-label">Section Code</label>
+            <div className="class-modal-form-group">
+              <label className="class-modal-label">Section Code</label>
               <input
                 type="text"
                 name="sectionCode"
                 value={formData.sectionCode}
                 onChange={handleChange}
-                className={`input ${errors.sectionCode ? 'error' : ''}`}
+                className={`class-modal-input ${errors.sectionCode ? 'error' : ''}`}
                 placeholder="e.g., A00, B01, C02"
               />
-              {errors.sectionCode && <div className="form-error">{errors.sectionCode}</div>}
-              <p className="text-xs text-gray-500 mt-1">
+              {errors.sectionCode && <span className="class-modal-error">{errors.sectionCode}</span>}
+              <span className="class-modal-hint">
                 Enter your lecture section code (e.g., A00, B01, C02)
-              </p>
+              </span>
             </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h4 className="font-medium text-blue-900 mb-2">💡 Tips:</h4>
-              <ul className="text-sm text-blue-800 space-y-1">
+            <div className="class-modal-tips">
+              <h4>💡 Tips:</h4>
+              <ul>
                 <li>• You can find your section code on WebReg or your class schedule</li>
                 <li>• Make sure to enter the lecture section, not discussion sections</li>
                 <li>• Course IDs are automatically formatted (e.g., "cse101" → "CSE 101")</li>
@@ -139,17 +135,17 @@ const ClassModal = ({ isOpen, onClose, onSave, editingClass }) => {
             </div>
           </div>
 
-          <div className="modal-footer">
+          <div className="class-modal-footer">
             <button
               type="button"
               onClick={onClose}
-              className="btn btn-outline"
+              className="class-modal-btn class-modal-btn-outline"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="btn btn-primary"
+              className="class-modal-btn class-modal-btn-primary"
             >
               {editingClass ? 'Update Class' : 'Add Class'}
             </button>

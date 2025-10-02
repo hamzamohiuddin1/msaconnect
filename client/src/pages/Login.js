@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Users, LogIn } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 import toast from 'react-hot-toast';
 import '../styles/Auth.css';
+import logo from '../assets/ilmpluslogo.png';
+import mtcLogo from '../assets/mtcatucsd.jpg';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -83,15 +85,15 @@ const Login = () => {
         <div className="auth-header">
           <div className="auth-logo">
             <div className="auth-logo-icon">
-              <Users className="w-7 h-7 text-white" />
+              <img src={logo} alt="ILM+ Logo"/>
             </div>
             <div className="auth-logo-text">
-              <h1>MSAConnect</h1>
-              <p>UCSD Muslim Student Association</p>
+              <h1>ILM+</h1>
+              <p>Connecting Students Through the Pursuit of Knowledge</p>
             </div>
           </div>
           <h2>Welcome Back</h2>
-          <p>Sign in to connect with your classmates</p>
+          <p>Sign in to connect with your classmates in the MSA</p>
         </div>
 
         <div className="auth-card">
@@ -155,9 +157,10 @@ const Login = () => {
 
         <div className="auth-disclaimer">
           <p>
-            By signing in, you agree to connect with fellow Muslim students at UCSD
+            Built by the Muslim Tech Collaborative at UCSD. For developer support or questions, please contact hmohiuddin@ucsd.edu
           </p>
         </div>
+        <img src={mtcLogo} alt="Muslim Tech Collaborative Logo" className="mtc-logo" />
       </div>
     </div>
   );

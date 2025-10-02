@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Users, Mail, CheckCircle } from 'lucide-react';
+import { Mail, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import '../styles/Auth.css';
+import logo from '../assets/ilmpluslogo.png';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -14,7 +15,8 @@ const Register = () => {
     phoneNumber: '',
     major: '',
     year: '',
-    gender: ''
+    gender: '',
+    genderPreference: false
   });
   const [errors, setErrors] = useState({});
   const [showSuccess, setShowSuccess] = useState(false);
@@ -23,10 +25,10 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }));
     // Clear error when user starts typing
     if (errors[name]) {
@@ -75,7 +77,8 @@ const Register = () => {
       phoneNumber: formData.phoneNumber.trim(),
       major: formData.major.trim(),
       year: formData.year,
-      gender: formData.gender
+      gender: formData.gender,
+      genderPreference: formData.genderPreference
     });
 
     if (result.success) {
@@ -126,15 +129,15 @@ const Register = () => {
         <div className="auth-header">
           <div className="auth-logo">
             <div className="auth-logo-icon">
-              <Users className="w-7 h-7 text-white" />
+              <img src={logo} alt="ILM+ Logo" />
             </div>
             <div className="auth-logo-text">
-              <h1>MSAConnect</h1>
-              <p>UCSD Muslim Student Association</p>
+              <h1>ILM+</h1>
+              <p>Connecting Students in the Pursuit of Knowledge</p>
             </div>
           </div>
           <h2>Create Your Account</h2>
-          <p>Join the MSA community at UCSD</p>
+          <p>Join the ILM+ community at UCSD</p>
         </div>
 
         <div className="auth-card">
@@ -253,6 +256,28 @@ const Register = () => {
                 {errors.gender && <span className="form-error">{errors.gender}</span>}
               </div>
             </div>
+
+            {formData.gender && (
+              <div className="form-group full-width">
+                <div className="privacy-preference">
+                  <input
+                    type="checkbox"
+                    id="genderPreference"
+                    name="genderPreference"
+                    checked={formData.genderPreference}
+                    onChange={handleChange}
+                    className="privacy-checkbox"
+                  />
+                  <label htmlFor="genderPreference" className="privacy-label">
+                    <span className="privacy-title">Connect with {formData.gender === 'Brother' ? 'Brothers' : 'Sisters'} only. </span>
+                    <span className="privacy-description">
+                      When enabled, you'll only see and be visible to {formData.gender === 'Brother' ? 'brothers' : 'sisters'} when searching for classmates. 
+                      You can change this preference anytime in your profile settings.
+                    </span>
+                  </label>
+                </div>
+              </div>
+            )}
 
             <button
               type="submit"

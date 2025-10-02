@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { User, Mail, Phone, GraduationCap, Calendar, Users, Edit3, Save, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import '../styles/Profile.css';
+import mtcLogo from '../assets/mtcatucsd.jpg'; // Added import for MTC logo
 
 const Profile = () => {
   const { user, updateUser } = useAuth();
@@ -12,15 +13,16 @@ const Profile = () => {
     phoneNumber: user?.phoneNumber || '',
     major: user?.major || '',
     year: user?.year || '',
-    gender: user?.gender || ''
+    gender: user?.gender || '',
+    genderPreference: user?.genderPreference || false
   });
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }));
     // Clear error when user starts typing
     if (errors[name]) {
@@ -50,7 +52,8 @@ const Profile = () => {
       phoneNumber: user?.phoneNumber || '',
       major: user?.major || '',
       year: user?.year || '',
-      gender: user?.gender || ''
+      gender: user?.gender || '',
+      genderPreference: user?.genderPreference || false
     });
     setIsEditing(true);
   };
@@ -61,7 +64,8 @@ const Profile = () => {
       phoneNumber: user?.phoneNumber || '',
       major: user?.major || '',
       year: user?.year || '',
-      gender: user?.gender || ''
+      gender: user?.gender || '',
+      genderPreference: user?.genderPreference || false
     });
     setErrors({});
     setIsEditing(false);
@@ -94,9 +98,6 @@ const Profile = () => {
     <div className="profile-container">
       {/* Header */}
       <div className="profile-header">
-        <div className="profile-avatar">
-          <User className="w-12 h-12 text-blue-600" />
-        </div>
         <h1>{user.name}</h1>
         <p>{user.major} • {user.year}</p>
       </div>
@@ -279,6 +280,36 @@ const Profile = () => {
               </div>
             </div>
           </div>
+
+          {/* Privacy Preference Section */}
+          <div className="profile-section">
+            <h3 className="profile-section-title">Privacy Preferences</h3>
+            <div className="privacy-setting">
+              <div className="privacy-setting-header">
+                <div>
+                  <h4 className="privacy-setting-title">{user?.gender === 'Brother' ? 'Brothers' : 'Sisters'} Only</h4>
+                  <p className="privacy-setting-description">
+                    When enabled, you'll only see and be visible to {user?.gender === 'Brother' ? 'brothers' : 'sisters'} when searching for classmates.
+                  </p>
+                </div>
+                {isEditing ? (
+                  <label className="toggle-switch">
+                    <input
+                      type="checkbox"
+                      name="genderPreference"
+                      checked={formData.genderPreference}
+                      onChange={handleChange}
+                    />
+                    <span className="toggle-slider"></span>
+                  </label>
+                ) : (
+                  <div className={`preference-badge ${user?.genderPreference ? 'active' : 'inactive'}`}>
+                    {user?.genderPreference ? 'Enabled' : 'Disabled'}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -303,6 +334,14 @@ const Profile = () => {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Support Section */}
+      <div className="support-section">
+        <p>
+          Built by the Muslim Tech Collaborative at UCSD. For support or questions, please email hmohiuddin@ucsd.edu
+        </p>
+        <img src={mtcLogo} alt="Muslim Tech Collaborative Logo" className="mtc-logo" />
       </div>
     </div>
   );

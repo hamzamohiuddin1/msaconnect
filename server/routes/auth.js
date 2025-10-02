@@ -31,7 +31,7 @@ router.post('/register', [
       });
     }
 
-    const { name, email, password, phoneNumber, major, year, gender } = req.body;
+    const { name, email, password, phoneNumber, major, year, gender, genderPreference } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -52,6 +52,7 @@ router.post('/register', [
       major,
       year,
       gender,
+      genderPreference: genderPreference || false,
       emailConfirmationToken: confirmationToken,
       emailConfirmationExpires: confirmationExpires
     });

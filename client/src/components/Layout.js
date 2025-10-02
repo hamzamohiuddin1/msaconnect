@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, Users, Calendar, User } from 'lucide-react';
+import { LogOut, Calendar, User } from 'lucide-react';
 import '../styles/Layout.css';
+import logo from '../assets/ilmpluslogo.png';
 
 const Layout = ({ children }) => {
   const { user, logout, isAuthenticated } = useAuth();
@@ -33,11 +34,11 @@ const Layout = ({ children }) => {
             {/* Logo */}
             <Link to="/dashboard" className="header-logo">
               <div className="logo-icon">
-                <Users className="w-5 h-5 text-white" />
+                <img src={logo} alt="ILM+ Logo" />
               </div>
               <div className="logo-text">
-                <h1>MSAConnect</h1>
-                <p>UCSD Muslim Student Association</p>
+                <h1>ILM+</h1>
+                <p>Connecting Students in the Pursuit of Knowledge</p>
               </div>
             </Link>
 

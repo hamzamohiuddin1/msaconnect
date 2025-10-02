@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { authAPI } from '../utils/api';
-import { CheckCircle, XCircle, Users } from 'lucide-react';
+import { CheckCircle, XCircle } from 'lucide-react';
+import logo from '../assets/ilmpluslogo.png';
 
 const EmailConfirmation = () => {
   const [searchParams] = useSearchParams();
@@ -43,12 +44,12 @@ const EmailConfirmation = () => {
       <div className="max-w-md w-full mx-4">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
-              <Users className="w-7 h-7 text-white" />
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center p-2">
+              <img src={logo} alt="ILM+ Logo" style={{ width: '2.5rem', height: '2.5rem', objectFit: 'contain' }} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-blue-600">MSAConnect</h1>
-              <p className="text-sm text-gold font-medium">UCSD Muslim Student Association</p>
+              <h1 className="text-2xl font-bold text-blue-600">ILM+</h1>
+              <p className="text-sm text-gold font-medium">Connecting Students in the Pursuit of Knowledge</p>
             </div>
           </div>
         </div>

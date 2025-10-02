@@ -59,6 +59,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     enum: ['Brother', 'Sister']
   },
+  genderPreference: {
+    type: Boolean,
+    default: false
+  },
   classes: [classSchema],
   isEmailConfirmed: {
     type: Boolean,

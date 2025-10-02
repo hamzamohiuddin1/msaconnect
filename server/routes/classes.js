@@ -60,8 +60,8 @@ router.get('/classmates/:courseId/:sectionCode', auth, async (req, res) => {
   try {
     const { courseId, sectionCode } = req.params;
     
-    // Find all users with the same class, excluding the current user
-    const classmates = await User.find({
+    // Build query filter based on gender preferences
+    const query = {
       _id: { $ne: req.user._id },
       isEmailConfirmed: true,
       classes: {
@@ -69,7 +69,26 @@ router.get('/classmates/:courseId/:sectionCode', auth, async (req, res) => {
           courseId: courseId.toUpperCase(),
         }
       }
-    }).select('name email phoneNumber major year gender classes');
+    };
+
+    // If current user has gender preference enabled, only show same gender
+    if (req.user.genderPreference) {
+      query.gender = req.user.gender;
+    }
+
+    // Find all users with the same class, excluding the current user
+    let classmates = await User.find(query)
+      .select('name email phoneNumber major year gender classes genderPreference');
+
+    // Filter out users who have genderPreference enabled but don't match current user's gender
+    classmates = classmates.filter(user => {
+      // If the classmate has gender preference enabled, they only want to see same gender
+      if (user.genderPreference) {
+        return user.gender === req.user.gender;
+      }
+      // If classmate doesn't have preference, they can see anyone
+      return true;
+    });
 
     // Filter and format the response to only include relevant class info
     const formattedClassmates = classmates.map(user => {

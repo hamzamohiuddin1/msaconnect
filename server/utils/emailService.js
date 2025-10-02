@@ -27,22 +27,22 @@ const sendConfirmationEmail = async (email, token, name) => {
     const msg = {
       to: email,
       from: {
-        email: process.env.EMAIL_USER || 'noreply@msaconnect.com',
-        name: 'MSAConnect'
+        email: process.env.EMAIL_USER || 'noreply@ilmplus.com',
+        name: 'ILM+'
       },
-      subject: 'MSAConnect - Confirm Your Email Address',
+      subject: 'ILM+ - Confirm Your Email Address',
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: #1e40af; margin-bottom: 10px;">MSAConnect</h1>
-            <p style="color: #d4af37; font-size: 18px; margin: 0;">Muslim Student Association</p>
+            <h1 style="color: #1e40af; margin-bottom: 10px;">ILM+</h1>
+            <p style="color: #d4af37; font-size: 18px; margin: 0;">Connecting Students Through Knowledge</p>
           </div>
           
           <div style="background-color: #f8fafc; padding: 30px; border-radius: 10px; border-left: 4px solid #1e40af;">
-            <h2 style="color: #1e40af; margin-bottom: 20px;">Welcome to MSAConnect, ${name}!</h2>
+            <h2 style="color: #1e40af; margin-bottom: 20px;">Welcome to ILM+, ${name}!</h2>
             
             <p style="color: #374151; line-height: 1.6; margin-bottom: 20px;">
-              Thank you for joining MSAConnect! We're excited to help you connect with your fellow Muslim students at UCSD.
+              Thank you for joining ILM+! We're excited to help you connect with your fellow students at UCSD.
             </p>
             
             <p style="color: #374151; line-height: 1.6; margin-bottom: 30px;">
@@ -67,7 +67,7 @@ const sendConfirmationEmail = async (email, token, name) => {
           </div>
           
           <div style="text-align: center; margin-top: 30px; color: #6b7280; font-size: 14px;">
-            <p>MSAConnect - Connecting the Muslim Student Community at UCSD</p>
+            <p>ILM+ - Connecting Students Through Knowledge at UCSD</p>
           </div>
         </div>
       `
