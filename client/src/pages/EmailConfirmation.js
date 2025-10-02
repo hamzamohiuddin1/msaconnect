@@ -50,7 +50,7 @@ const EmailConfirmation = () => {
             </div>
             <div className="confirmation-logo-text">
               <h1>ILM+</h1>
-              <p>Connecting Students Through Knowledge</p>
+              <p>Connecting Students in the Pursuit of Knowledge</p>
             </div>
           </div>
         </div>
