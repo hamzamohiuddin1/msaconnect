@@ -127,10 +127,17 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: 'LOGOUT' });
   };
 
-  const updateUser = (userData) => {
-    const updatedUser = { ...state.user, ...userData };
-    localStorage.setItem('user', JSON.stringify(updatedUser));
-    dispatch({ type: 'UPDATE_USER', payload: userData });
+  const updateUser = async (userData) => {
+    try {
+      const response = await authAPI.updateProfile(userData);
+      const updatedUser = response.data.user;
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      dispatch({ type: 'UPDATE_USER', payload: updatedUser });
+      return { success: true };
+    } catch (error) {
+      const message = error.response?.data?.message || 'Profile update failed';
+      return { success: false, error: message };
+    }
   };
 
   const clearError = () => {

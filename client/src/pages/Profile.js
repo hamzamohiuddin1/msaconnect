@@ -75,10 +75,13 @@ const Profile = () => {
     if (!validateForm()) return;
 
     try {
-      // In a real app, you'd make an API call here to update the user
-      updateUser(formData);
-      setIsEditing(false);
-      toast.success('Profile updated successfully!');
+      const result = await updateUser(formData);
+      if (result.success) {
+        setIsEditing(false);
+        toast.success('Profile updated successfully!');
+      } else {
+        toast.error(result.error || 'Failed to update profile');
+      }
     } catch (error) {
       console.error('Error updating profile:', error);
       toast.error('Failed to update profile');
@@ -260,23 +263,8 @@ const Profile = () => {
               </div>
               <div className="field-content">
                 <label className="field-label">Gender</label>
-                {isEditing ? (
-                  <div>
-                    <select
-                      name="gender"
-                      value={formData.gender}
-                      onChange={handleChange}
-                      className={`field-select ${errors.gender ? 'error' : ''}`}
-                    >
-                      <option value="">Select Gender</option>
-                      <option value="Brother">Brother</option>
-                      <option value="Sister">Sister</option>
-                    </select>
-                    {errors.gender && <span className="field-error">{errors.gender}</span>}
-                  </div>
-                ) : (
-                  <p className="field-value">{user.gender}</p>
-                )}
+                <p className="field-value">{user.gender}</p>
+                <p className="field-note">Gender cannot be changed. Contact support if needed.</p>
               </div>
             </div>
           </div>

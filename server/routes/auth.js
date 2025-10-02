@@ -156,6 +156,7 @@ router.post('/login', [
         major: user.major,
         year: user.year,
         gender: user.gender,
+        genderPreference: user.genderPreference,
         classes: user.classes
       }
     });
@@ -168,6 +169,60 @@ router.post('/login', [
 // Get current user
 router.get('/me', auth, async (req, res) => {
   res.json({ user: req.user });
+});
+
+// Update user profile
+router.put('/profile', auth, [
+  body('name').optional().trim().isLength({ min: 2 }).withMessage('Name must be at least 2 characters'),
+  body('phoneNumber').optional().isMobilePhone().withMessage('Please provide a valid phone number'),
+  body('major').optional().trim().isLength({ min: 2 }).withMessage('Major is required'),
+  body('year').optional().isIn(['Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate']).withMessage('Invalid year'),
+  body('genderPreference').optional().isBoolean().withMessage('Gender preference must be a boolean')
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ 
+        message: 'Validation failed', 
+        errors: errors.array() 
+      });
+    }
+
+    const { name, phoneNumber, major, year, genderPreference } = req.body;
+
+    // Build update object (exclude gender and email as they shouldn't be updatable)
+    const updateData = {};
+    if (name !== undefined) updateData.name = name;
+    if (phoneNumber !== undefined) updateData.phoneNumber = phoneNumber;
+    if (major !== undefined) updateData.major = major;
+    if (year !== undefined) updateData.year = year;
+    if (genderPreference !== undefined) updateData.genderPreference = genderPreference;
+
+    // Update user
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      updateData,
+      { new: true, runValidators: true }
+    ).select('-password -emailConfirmationToken');
+
+    res.json({
+      message: 'Profile updated successfully',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        major: user.major,
+        year: user.year,
+        gender: user.gender,
+        genderPreference: user.genderPreference,
+        classes: user.classes
+      }
+    });
+  } catch (error) {
+    console.error('Profile update error:', error);
+    res.status(500).json({ message: 'Server error during profile update' });
+  }
 });
 
 module.exports = router;
