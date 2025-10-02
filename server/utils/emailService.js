@@ -2,7 +2,7 @@ const sgMail = require('@sendgrid/mail');
 const crypto = require('crypto');
 
 // // Configure SendGrid
-// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Generate confirmation token
 const generateConfirmationToken = () => {
@@ -63,7 +63,7 @@ const sendConfirmationEmail = async (email, token, name) => {
       `
     };
 
-    // await sgMail.send(msg);
+    await sgMail.send(msg);
     console.log('Confirmation email sent successfully to:', email);
   } catch (error) {
     console.error('Error sending confirmation email:', error);
