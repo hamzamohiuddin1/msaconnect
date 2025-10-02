@@ -25,3 +25,5 @@ server/build/
 # Misc
 *.swp
 *.swo
+
+ecosystem.config.js
