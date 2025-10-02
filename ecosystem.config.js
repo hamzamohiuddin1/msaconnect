@@ -13,7 +13,7 @@ module.exports = {
           EMAIL_PORT: 587,
           EMAIL_USER: 'noreply@msaconnect.com',
           EMAIL_PASS: '@Asimhamza#1',
-          SENDGRID_API_KEY: 'SG.TiteaQmgTN6sDB9OR36jDw.jTZKc96yNHzaQQvrK6mZdcV2luRJNa1t-LOG2enISZ'
+          SENDGRID_API_KEY: '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'
         }
       }
     ]
