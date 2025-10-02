@@ -6,7 +6,11 @@ const classSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    uppercase: true
+    uppercase: true,
+    set: function(value) {
+      // Remove all spaces and convert to uppercase for consistent storage
+      return value.replace(/\s+/g, '').toUpperCase();
+    }
   },
   sectionCode: {
     type: String,

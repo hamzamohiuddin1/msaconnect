@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { classesAPI } from '../utils/api';
+import { formatCourseId } from '../utils/formatters';
 import { Plus, BookOpen, Users, Edit3, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import ClassModal from '../components/ClassModal';
@@ -151,7 +152,7 @@ const Dashboard = () => {
                       <BookOpen className="w-6 h-6 text-blue-600" />
                     </div>
                     <div className="class-details">
-                      <h3>{classItem.courseId}</h3>
+                      <h3>{formatCourseId(classItem.courseId)}</h3>
                       <p>Section {classItem.sectionCode}</p>
                     </div>
                   </div>

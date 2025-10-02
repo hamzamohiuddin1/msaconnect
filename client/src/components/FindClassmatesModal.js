@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Users, User } from 'lucide-react';
 import { classesAPI } from '../utils/api';
+import { formatCourseId } from '../utils/formatters';
 import toast from 'react-hot-toast';
 import ContactModal from './ContactModal';
 import '../styles/FindClassmatesModal.css';
@@ -57,7 +58,7 @@ const FindClassmatesModal = ({ isOpen, onClose, classInfo }) => {
           <div className="find-classmates-header">
             <div className="find-classmates-header-content">
               <h3>Find Classmates</h3>
-              <p>{classInfo?.courseId} - Section {classInfo?.sectionCode}</p>
+              <p>{formatCourseId(classInfo?.courseId)} - Section {classInfo?.sectionCode}</p>
             </div>
             <button onClick={onClose} className="find-classmates-close">
               <X className="w-5 h-5" />

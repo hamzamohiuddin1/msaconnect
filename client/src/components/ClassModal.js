@@ -63,9 +63,9 @@ const ClassModal = ({ isOpen, onClose, onSave, editingClass }) => {
     
     if (!validateForm()) return;
 
-    // Format the data
+    // Format the data - remove spaces from courseId for consistent storage
     const classData = {
-      courseId: formData.courseId.trim().toUpperCase(),
+      courseId: formData.courseId.replace(/\s+/g, '').trim().toUpperCase(),
       sectionCode: formData.sectionCode.trim().toUpperCase()
     };
 
@@ -105,7 +105,7 @@ const ClassModal = ({ isOpen, onClose, onSave, editingClass }) => {
               />
               {errors.courseId && <span className="class-modal-error">{errors.courseId}</span>}
               <span className="class-modal-hint">
-                Enter the course department and number (e.g., CSE 101, MATH 20A)
+                Enter the course department and number (e.g., CSE101, MATH20A)
               </span>
             </div>
 
@@ -130,7 +130,8 @@ const ClassModal = ({ isOpen, onClose, onSave, editingClass }) => {
               <ul>
                 <li>• You can find your section code on WebReg or your class schedule</li>
                 <li>• Make sure to enter the lecture section, not discussion sections</li>
-                <li>• Course IDs are automatically formatted (e.g., "cse101" → "CSE 101")</li>
+                <li>• Course IDs are automatically formatted (e.g., "cse 101" → "CSE101")</li>
+                <li>• Spaces in course IDs are automatically removed for consistency</li>
               </ul>
             </div>
           </div>

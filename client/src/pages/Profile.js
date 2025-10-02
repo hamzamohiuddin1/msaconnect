@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { formatCourseId } from '../utils/formatters';
 import { User, Mail, Phone, GraduationCap, Calendar, Users, Edit3, Save, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import '../styles/Profile.css';
@@ -311,7 +312,7 @@ const Profile = () => {
             <div className="classes-grid">
               {user.classes.map((classItem, index) => (
                 <div key={index} className="class-item">
-                  <h3>{classItem.courseId}</h3>
+                  <h3>{formatCourseId(classItem.courseId)}</h3>
                   <p>Section {classItem.sectionCode}</p>
                 </div>
               ))}

@@ -32,9 +32,9 @@ router.put('/', auth, [
 
     const { classes } = req.body;
 
-    // Format classes to uppercase
+    // Format classes to uppercase and remove spaces from courseId
     const formattedClasses = classes.map(cls => ({
-      courseId: cls.courseId.toUpperCase().trim(),
+      courseId: cls.courseId.replace(/\s+/g, '').toUpperCase().trim(),
       sectionCode: cls.sectionCode.toUpperCase().trim()
     }));
 
@@ -60,13 +60,16 @@ router.get('/classmates/:courseId/:sectionCode', auth, async (req, res) => {
   try {
     const { courseId, sectionCode } = req.params;
     
+    // Normalize courseId by removing spaces and converting to uppercase
+    const normalizedCourseId = courseId.replace(/\s+/g, '').toUpperCase();
+    
     // Build query filter based on gender preferences
     const query = {
       _id: { $ne: req.user._id },
       isEmailConfirmed: true,
       classes: {
         $elemMatch: {
-          courseId: courseId.toUpperCase(),
+          courseId: normalizedCourseId,
         }
       }
     };
@@ -94,7 +97,7 @@ router.get('/classmates/:courseId/:sectionCode', auth, async (req, res) => {
     const formattedClassmates = classmates.map(user => {
       // Find the matching class to get the exact section
       const matchingClass = user.classes.find(cls => 
-        cls.courseId === courseId.toUpperCase()
+        cls.courseId === normalizedCourseId
       );
 
       return {
@@ -110,7 +113,7 @@ router.get('/classmates/:courseId/:sectionCode', auth, async (req, res) => {
     });
 
     res.json({
-      courseId: courseId.toUpperCase(),
+      courseId: normalizedCourseId,
       sectionCode: sectionCode.toUpperCase(),
       classmates: formattedClassmates,
       count: formattedClassmates.length
