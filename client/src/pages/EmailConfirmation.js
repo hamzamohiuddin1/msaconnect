@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { authAPI } from '../utils/api';
 import { CheckCircle, XCircle } from 'lucide-react';
 import logo from '../assets/ilmpluslogo.png';
+import '../styles/EmailConfirmation.css';
 
 const EmailConfirmation = () => {
   const [searchParams] = useSearchParams();
@@ -40,40 +41,40 @@ const EmailConfirmation = () => {
   }, [token]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="max-w-md w-full mx-4">
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center p-2">
-              <img src={logo} alt="ILM+ Logo" style={{ width: '2.5rem', height: '2.5rem', objectFit: 'contain' }} />
+    <div className="confirmation-container">
+      <div className="confirmation-content">
+        <div className="confirmation-header">
+          <div className="confirmation-logo">
+            <div className="confirmation-logo-icon">
+              <img src={logo} alt="ILM+ Logo" />
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-blue-600">ILM+</h1>
-              <p className="text-sm text-gold font-medium">Connecting Students in the Pursuit of Knowledge</p>
+            <div className="confirmation-logo-text">
+              <h1>ILM+</h1>
+              <p>Connecting Students Through Knowledge</p>
             </div>
           </div>
         </div>
 
-        <div className="card">
-          <div className="card-body text-center">
+        <div className="confirmation-card">
+          <div className="confirmation-card-body">
             {status === 'loading' && (
               <>
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <div className="loading"></div>
+                <div className="confirmation-icon-wrapper loading">
+                  <div className="confirmation-loading"></div>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Confirming Email...</h2>
-                <p className="text-gray-600">Please wait while we verify your email address.</p>
+                <h2 className="confirmation-title">Confirming Email...</h2>
+                <p className="confirmation-message">Please wait while we verify your email address.</p>
               </>
             )}
 
             {status === 'success' && (
               <>
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="confirmation-icon-wrapper success">
                   <CheckCircle className="w-8 h-8 text-green-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Email Confirmed!</h2>
-                <p className="text-gray-600 mb-6">{message}</p>
-                <Link to="/login" className="btn btn-primary">
+                <h2 className="confirmation-title">Email Confirmed!</h2>
+                <p className="confirmation-message">{message}</p>
+                <Link to="/login" className="confirmation-button-primary">
                   Continue to Login
                 </Link>
               </>
@@ -81,16 +82,16 @@ const EmailConfirmation = () => {
 
             {status === 'error' && (
               <>
-                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="confirmation-icon-wrapper error">
                   <XCircle className="w-8 h-8 text-red-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Confirmation Failed</h2>
-                <p className="text-gray-600 mb-6">{message}</p>
-                <div className="space-y-3">
-                  <Link to="/register" className="btn btn-primary w-full">
+                <h2 className="confirmation-title">Confirmation Failed</h2>
+                <p className="confirmation-message">{message}</p>
+                <div className="confirmation-actions">
+                  <Link to="/register" className="confirmation-button-primary">
                     Try Registering Again
                   </Link>
-                  <Link to="/login" className="btn btn-outline w-full">
+                  <Link to="/login" className="confirmation-button-outline">
                     Back to Login
                   </Link>
                 </div>
