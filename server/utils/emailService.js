@@ -12,7 +12,17 @@ const generateConfirmationToken = () => {
 // Send confirmation email
 const sendConfirmationEmail = async (email, token, name) => {
   try {
+    // Log API key status (first 10 chars only for security)
+    const apiKey = process.env.SENDGRID_API_KEY;
+    if (!apiKey) {
+      console.error('SENDGRID_API_KEY is not set!');
+      throw new Error('SendGrid API key is not configured');
+    }
+    console.log('SendGrid API key starts with:', apiKey.substring(0, 10));
+    
     const confirmationUrl = `${process.env.FRONTEND_URL}/confirm-email?token=${token}`;
+    console.log('Sending confirmation email to:', email);
+    console.log('Confirmation URL:', confirmationUrl);
     
     const msg = {
       to: email,
@@ -63,12 +73,14 @@ const sendConfirmationEmail = async (email, token, name) => {
       `
     };
 
-    await sgMail.send(msg);
+    const result = await sgMail.send(msg);
+    console.log('SendGrid response status:', result[0]?.statusCode);
     console.log('Confirmation email sent successfully to:', email);
   } catch (error) {
     console.error('Error sending confirmation email:', error);
+    console.error('Error message:', error.message);
     if (error.response) {
-      console.error('SendGrid error response:', error.response.body);
+      console.error('SendGrid error response:', JSON.stringify(error.response.body, null, 2));
     }
     throw new Error('Failed to send confirmation email');
   }
