@@ -8,12 +8,12 @@ module.exports = {
           PORT: 5001,
           MONGODB_URI: 'mongodb+srv://hmohiuddin:hmohiuddin@msaconnect.buhmxcg.mongodb.net/?retryWrites=true&w=majority&appName=msaconnect',
           JWT_SECRET: 'KS2a12t1Kdy',
-          FRONTEND_URL: 'http://147.182.224.246',
+          FRONTEND_URL: 'https://ilmplusatucsd.com',
           EMAIL_HOST: 'smtp.ucsd.edu',
           EMAIL_PORT: 587,
-          EMAIL_USER: 'noreply@msaconnect.com',
+          EMAIL_USER: 'noreply@ilmplusatucsd.com',
           EMAIL_PASS: '@Asimhamza#1',
-          SENDGRID_API_KEY: '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'
+          SENDGRID_API_KEY: ''
         }
       }
     ]
