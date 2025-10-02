@@ -3,7 +3,7 @@ const crypto = require('crypto');
 
 // // Configure SendGrid
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
+console.log('SendGrid API key:', process.env.SENDGRID_API_KEY);
 // Generate confirmation token
 const generateConfirmationToken = () => {
   return crypto.randomBytes(32).toString('hex');
