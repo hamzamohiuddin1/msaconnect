@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { authAPI } from '../utils/api';
 import { CheckCircle, XCircle, Users } from 'lucide-react';
@@ -7,11 +7,18 @@ const EmailConfirmation = () => {
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState('loading'); // loading, success, error
   const [message, setMessage] = useState('');
+  const hasAttemptedConfirmation = useRef(false);
   
   const token = searchParams.get('token');
 
   useEffect(() => {
     const confirmEmail = async () => {
+      // Prevent duplicate API calls (especially in React StrictMode)
+      if (hasAttemptedConfirmation.current) {
+        return;
+      }
+      hasAttemptedConfirmation.current = true;
+
       if (!token) {
         setStatus('error');
         setMessage('Invalid confirmation link');
