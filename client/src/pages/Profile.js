@@ -313,7 +313,12 @@ const Profile = () => {
               {user.classes.map((classItem, index) => (
                 <div key={index} className="class-item">
                   <h3>{formatCourseId(classItem.courseId)}</h3>
-                  <p>Section {classItem.sectionCode}</p>
+                  <p>
+                    Lecture: {classItem.sectionCode}
+                    {classItem.discussionCode && (
+                      <span> • Discussion: {classItem.discussionCode}</span>
+                    )}
+                  </p>
                 </div>
               ))}
             </div>

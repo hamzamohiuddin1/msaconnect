@@ -17,6 +17,12 @@ const classSchema = new mongoose.Schema({
     required: true,
     trim: true,
     uppercase: true
+  },
+  discussionCode: {
+    type: String,
+    required: false,
+    trim: true,
+    uppercase: true
   }
 });
 

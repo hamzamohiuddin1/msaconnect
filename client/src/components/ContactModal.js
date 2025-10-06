@@ -57,7 +57,10 @@ const ContactModal = ({ isOpen, onClose, classmate, classInfo }) => {
               <span className="contact-class-info-title">Shared Class</span>
             </div>
             <p className="contact-class-info-details">
-              {classInfo.courseId} - Section {classmate.sectionCode}
+              {classInfo.courseId} - Lecture: {classmate.sectionCode}
+              {classmate.discussionCode && (
+                <span> • Discussion: {classmate.discussionCode}</span>
+              )}
             </p>
           </div>
 

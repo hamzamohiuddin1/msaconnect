@@ -5,7 +5,8 @@ import '../styles/ClassModal.css';
 const ClassModal = ({ isOpen, onClose, onSave, editingClass }) => {
   const [formData, setFormData] = useState({
     courseId: '',
-    sectionCode: ''
+    sectionCode: '',
+    discussionCode: ''
   });
   const [errors, setErrors] = useState({});
 
@@ -13,12 +14,14 @@ const ClassModal = ({ isOpen, onClose, onSave, editingClass }) => {
     if (editingClass) {
       setFormData({
         courseId: editingClass.courseId || '',
-        sectionCode: editingClass.sectionCode || ''
+        sectionCode: editingClass.sectionCode || '',
+        discussionCode: editingClass.discussionCode || ''
       });
     } else {
       setFormData({
         courseId: '',
-        sectionCode: ''
+        sectionCode: '',
+        discussionCode: ''
       });
     }
     setErrors({});
@@ -67,6 +70,11 @@ const ClassModal = ({ isOpen, onClose, onSave, editingClass }) => {
       sectionCode: formData.sectionCode.trim().toUpperCase()
     };
 
+    // Add discussion code if provided
+    if (formData.discussionCode && formData.discussionCode.trim()) {
+      classData.discussionCode = formData.discussionCode.trim().toUpperCase();
+    }
+
     onSave(classData);
   };
 
@@ -108,7 +116,7 @@ const ClassModal = ({ isOpen, onClose, onSave, editingClass }) => {
             </div>
 
             <div className="class-modal-form-group">
-              <label className="class-modal-label">Section Code</label>
+              <label className="class-modal-label">Lecture Section Code</label>
               <input
                 type="text"
                 name="sectionCode"
@@ -123,11 +131,26 @@ const ClassModal = ({ isOpen, onClose, onSave, editingClass }) => {
               </span>
             </div>
 
+            <div className="class-modal-form-group">
+              <label className="class-modal-label">Discussion Section Code (Optional)</label>
+              <input
+                type="text"
+                name="discussionCode"
+                value={formData.discussionCode}
+                onChange={handleChange}
+                className="class-modal-input"
+                placeholder="e.g., A01, B02, C03"
+              />
+              <span className="class-modal-hint">
+                Enter your discussion section code if applicable (e.g., A01, B02, C03)
+              </span>
+            </div>
+
             <div className="class-modal-tips">
               <h4>💡 Tips:</h4>
               <ul>
-                <li>• You can find your section code on WebReg or your class schedule</li>
-                <li>• Make sure to enter the lecture section, not discussion sections</li>
+                <li>• You can find your section codes on WebReg or your class schedule</li>
+                <li>• Lecture section is required, discussion section is optional</li>
                 <li>• Course IDs are automatically formatted (e.g., "cse 101" → "CSE101")</li>
                 <li>• Spaces in course IDs are automatically removed for consistency</li>
               </ul>

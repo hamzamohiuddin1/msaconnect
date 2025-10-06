@@ -19,7 +19,8 @@ router.get('/', auth, async (req, res) => {
 router.put('/', auth, [
   body('classes').isArray().withMessage('Classes must be an array'),
   body('classes.*.courseId').trim().isLength({ min: 1 }).withMessage('Course ID is required'),
-  body('classes.*.sectionCode').trim().isLength({ min: 1 }).withMessage('Section code is required')
+  body('classes.*.sectionCode').trim().isLength({ min: 1 }).withMessage('Section code is required'),
+  body('classes.*.discussionCode').optional().trim()
 ], async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -33,10 +34,19 @@ router.put('/', auth, [
     const { classes } = req.body;
 
     // Format classes to uppercase and remove spaces from courseId
-    const formattedClasses = classes.map(cls => ({
-      courseId: cls.courseId.replace(/\s+/g, '').toUpperCase().trim(),
-      sectionCode: cls.sectionCode.toUpperCase().trim()
-    }));
+    const formattedClasses = classes.map(cls => {
+      const formattedClass = {
+        courseId: cls.courseId.replace(/\s+/g, '').toUpperCase().trim(),
+        sectionCode: cls.sectionCode.toUpperCase().trim()
+      };
+      
+      // Add discussion code if provided
+      if (cls.discussionCode && cls.discussionCode.trim()) {
+        formattedClass.discussionCode = cls.discussionCode.toUpperCase().trim();
+      }
+      
+      return formattedClass;
+    });
 
     // Update user's classes
     const user = await User.findByIdAndUpdate(
@@ -108,7 +118,8 @@ router.get('/classmates/:courseId/:sectionCode', auth, async (req, res) => {
         major: user.major,
         year: user.year,
         gender: user.gender,
-        sectionCode: matchingClass.sectionCode
+        sectionCode: matchingClass.sectionCode,
+        discussionCode: matchingClass.discussionCode
       };
     });
 

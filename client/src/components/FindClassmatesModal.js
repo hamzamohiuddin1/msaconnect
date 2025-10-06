@@ -58,7 +58,12 @@ const FindClassmatesModal = ({ isOpen, onClose, classInfo }) => {
           <div className="find-classmates-header">
             <div className="find-classmates-header-content">
               <h3>Find Classmates</h3>
-              <p>{formatCourseId(classInfo?.courseId)} - Section {classInfo?.sectionCode}</p>
+              <p>
+                {formatCourseId(classInfo?.courseId)} - Lecture: {classInfo?.sectionCode}
+                {classInfo?.discussionCode && (
+                  <span> • Discussion: {classInfo?.discussionCode}</span>
+                )}
+              </p>
             </div>
             <button onClick={onClose} className="find-classmates-close">
               <X className="w-5 h-5" />
@@ -135,7 +140,10 @@ const FindClassmatesModal = ({ isOpen, onClose, classInfo }) => {
                         </div>
                         <div className="find-classmates-item-right">
                           <div className="find-classmates-item-section">
-                            Section {classmate.sectionCode}
+                            Lecture: {classmate.sectionCode}
+                            {classmate.discussionCode && (
+                              <div>Discussion: {classmate.discussionCode}</div>
+                            )}
                           </div>
                           <div className="find-classmates-item-hint">
                             Click to view contact
