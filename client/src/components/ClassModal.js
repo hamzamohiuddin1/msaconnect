@@ -50,8 +50,6 @@ const ClassModal = ({ isOpen, onClose, onSave, editingClass }) => {
 
     if (!formData.sectionCode.trim()) {
       newErrors.sectionCode = 'Section code is required';
-    } else if (!/^[A-Z]\d{2}$/i.test(formData.sectionCode.trim())) {
-      newErrors.sectionCode = 'Please enter a valid section code (e.g., A00, B01)';
     }
 
     setErrors(newErrors);
