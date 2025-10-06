@@ -62,7 +62,7 @@ const Dashboard = () => {
   const handleSaveClass = async (classData) => {
     try {
       let updatedClasses;
-      
+
       if (editingClass !== null && editingClass.index !== undefined) {
         // Editing existing class
         updatedClasses = [...classes];
@@ -70,6 +70,7 @@ const Dashboard = () => {
       } else {
         // Adding new class
         updatedClasses = [...classes, classData];
+        await classesAPI.sendNewClassmateEmail(user.name, classData.courseId);
       }
 
       await classesAPI.updateClasses(updatedClasses);

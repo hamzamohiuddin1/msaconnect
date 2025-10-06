@@ -45,6 +45,8 @@ export const classesAPI = {
   updateClasses: (classes) => api.put('/classes', { classes }),
   findClassmates: (courseId, sectionCode) => 
     api.get(`/classes/classmates/${courseId}/${sectionCode}`),
+  sendNewClassmateEmail: (name, courseId) =>
+    api.post('/classes/send-new-classmate-email', { name, courseId }),
 };
 
 export default api;

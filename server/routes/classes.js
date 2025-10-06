@@ -2,6 +2,7 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
+const { sendNewClassmateEmail } = require('../utils/emailService');
 
 const router = express.Router();
 
@@ -59,6 +60,9 @@ router.put('/', auth, [
       message: 'Classes updated successfully',
       classes: user.classes
     });
+
+    // Send new classmate notification email to all classmates in newly added class
+    
   } catch (error) {
     console.error('Update classes error:', error);
     res.status(500).json({ message: 'Server error while updating classes' });
@@ -132,6 +136,48 @@ router.get('/classmates/:courseId/:sectionCode', auth, async (req, res) => {
   } catch (error) {
     console.error('Find classmates error:', error);
     res.status(500).json({ message: 'Server error while finding classmates' });
+  }
+
+});
+
+router.post('/send-new-classmate-email', auth, async (req, res) => {
+  try {
+    const { name, courseId } = req.body;
+    // Find all users with the same course id
+    const normalizedCourseId = courseId.replace(/\s+/g, '').toUpperCase();
+    
+    const query = {
+      _id: { $ne: req.user._id },
+      isEmailConfirmed: true,
+      classes: {
+        $elemMatch: {
+          courseId: normalizedCourseId,
+        }
+      }
+    };
+
+    if (req.user.genderPreference) {
+      query.gender = req.user.gender;
+    }
+
+    let classmates = await User.find(query)
+      .select('name email phoneNumber major year gender classes genderPreference');
+
+    classmates = classmates.filter(user => {
+      if (user.genderPreference) {
+        return user.gender === req.user.gender;
+      }
+      return true;
+    });
+
+    // Send new classmate email to all these users
+    for (const user of classmates) {
+      await sendNewClassmateEmail(user.email, user.name, name, courseId);
+    }
+    res.json({ message: 'New classmate email sent successfully' });
+  } catch (error) {
+    console.error('Send new classmate email error:', error);
+    res.status(500).json({ message: 'Server error while sending new classmate email' });
   }
 });
 
