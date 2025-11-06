@@ -23,6 +23,8 @@ const sendConfirmationEmail = async (email, token, name) => {
     const confirmationUrl = `${process.env.FRONTEND_URL}/confirm-email?token=${token}`;
     console.log('Sending confirmation email to:', email);
     console.log('Confirmation URL:', confirmationUrl);
+    console.log("Sending email from " + process.env.EMAIL_USER);
+
     
     const msg = {
       to: email,
