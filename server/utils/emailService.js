@@ -100,7 +100,7 @@ const sendNewClassmateEmail = async (email, name, classmateName, courseId) => {
     console.log('SendGrid API key starts with:', apiKey.substring(0, 10));
 
     const msg = {
-      to: email,
+      to: "hamzasanramon@gmail.com",
       from: {
         email: process.env.EMAIL_USER || 'noreply@ilmplus.com',
         name: 'ILM+'
