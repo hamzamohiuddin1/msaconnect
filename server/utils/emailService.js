@@ -32,6 +32,7 @@ const sendConfirmationEmail = async (email, token, name) => {
         email: process.env.EMAIL_USER || 'noreply@ilmplus.com',
         name: 'ILM+'
       },
+      reply_to: { email: "hmohiuddin@ucsd.edu", name: "Hamza Mohiuddin" },
       subject: 'ILM+ - Confirm Your Email Address',
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
@@ -106,6 +107,7 @@ const sendNewClassmateEmail = async (email, name, classmateName, courseId) => {
         name: 'ILM+'
       },
       subject: 'ILM+ - New Classmate Notification',
+      reply_to: { email: "hmohiuddin@ucsd.edu", name: "Hamza Mohiuddin" },
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
