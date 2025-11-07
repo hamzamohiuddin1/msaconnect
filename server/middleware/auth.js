@@ -16,10 +16,6 @@ const auth = async (req, res, next) => {
       return res.status(401).json({ message: 'Token is not valid' });
     }
 
-    if (!user.isEmailConfirmed) {
-      return res.status(401).json({ message: 'Please confirm your email address first' });
-    }
-
     req.user = user;
     next();
   } catch (error) {

@@ -6,7 +6,6 @@ import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import EmailConfirmation from './pages/EmailConfirmation';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 
@@ -44,7 +43,6 @@ function App() {
             {/* Public routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/confirm-email" element={<EmailConfirmation />} />
             
             {/* Protected routes */}
             <Route

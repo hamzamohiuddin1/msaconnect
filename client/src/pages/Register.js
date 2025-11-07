@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Mail, CheckCircle } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import toast from 'react-hot-toast';
 import '../styles/Auth.css';
 import logo from '../assets/ilmpluslogo.png';
@@ -19,7 +19,6 @@ const Register = () => {
     genderPreference: false
   });
   const [errors, setErrors] = useState({});
-  const [showSuccess, setShowSuccess] = useState(false);
   
   const { register, loading } = useAuth();
   const navigate = useNavigate();
@@ -82,46 +81,15 @@ const Register = () => {
     });
 
     if (result.success) {
-      setShowSuccess(true);
-      toast.success('Registration successful! Please check your email to confirm your account.');
+      toast.success('Registration successful! Redirecting to dashboard...');
+      // Redirect to dashboard after successful registration
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1000);
     } else {
       toast.error(result.error);
     }
   };
-
-  if (showSuccess) {
-    return (
-      <div className="auth-container">
-        <div className="auth-content">
-          <div className="auth-card">
-            <div className="auth-form">
-              <div className="success-container">
-                <div className="success-icon">
-                  <CheckCircle className="w-8 h-8 text-green-600" />
-                </div>
-                <h2>Check Your Email!</h2>
-                <p>
-                  We've sent a confirmation email to <strong>{formData.email}</strong>. 
-                  Please click the link in the email to verify your account.
-                </p>
-                <div className="success-actions">
-                  <Link to="/login" className="success-button-primary">
-                    Go to Login
-                  </Link>
-                  <button
-                    onClick={() => setShowSuccess(false)}
-                    className="success-button-secondary"
-                  >
-                    Back to Registration
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="auth-container">

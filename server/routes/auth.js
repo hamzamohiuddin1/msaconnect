@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
-const { generateConfirmationToken, sendConfirmationEmail } = require('../utils/emailService');
 
 const router = express.Router();
 
@@ -39,11 +38,7 @@ router.post('/register', [
       return res.status(400).json({ message: 'User already exists with this email' });
     }
 
-    // Generate confirmation token
-    const confirmationToken = generateConfirmationToken();
-    const confirmationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
-
-    // Create user
+    // Create user with email already confirmed
     const user = new User({
       name,
       email,
@@ -53,53 +48,36 @@ router.post('/register', [
       year,
       gender,
       genderPreference: genderPreference || false,
-      emailConfirmationToken: confirmationToken,
-      emailConfirmationExpires: confirmationExpires
+      isEmailConfirmed: true  // Automatically confirm email
     });
 
     await user.save();
 
-    // Send confirmation email
-    await sendConfirmationEmail(email, confirmationToken, name);
+    // Generate JWT token for immediate login
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
 
     res.status(201).json({
-      message: 'User registered successfully. Please check your email to confirm your account.',
+      message: 'User registered successfully. You can now start using the app!',
+      token,
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
-        isEmailConfirmed: user.isEmailConfirmed
+        phoneNumber: user.phoneNumber,
+        major: user.major,
+        year: user.year,
+        gender: user.gender,
+        genderPreference: user.genderPreference,
+        classes: user.classes
       }
     });
   } catch (error) {
     console.error('Registration error:', error);
     res.status(500).json({ message: 'Server error during registration' });
-  }
-});
-
-// Confirm email
-router.get('/confirm-email/:token', async (req, res) => {
-  try {
-    const { token } = req.params;
-
-    const user = await User.findOne({
-      emailConfirmationToken: token,
-      emailConfirmationExpires: { $gt: Date.now() }
-    });
-
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid or expired confirmation token' });
-    }
-
-    user.isEmailConfirmed = true;
-    user.emailConfirmationToken = undefined;
-    user.emailConfirmationExpires = undefined;
-    await user.save();
-
-    res.json({ message: 'Email confirmed successfully! You can now log in.' });
-  } catch (error) {
-    console.error('Email confirmation error:', error);
-    res.status(500).json({ message: 'Server error during email confirmation' });
   }
 });
 
@@ -129,13 +107,6 @@ router.post('/login', [
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
-    }
-
-    // Check if email is confirmed
-    if (!user.isEmailConfirmed) {
-      return res.status(400).json({ 
-        message: 'Please confirm your email address before logging in' 
-      });
     }
 
     // Generate JWT

@@ -107,8 +107,16 @@ export const AuthProvider = ({ children }) => {
       dispatch({ type: 'LOGIN_START' });
       
       const response = await authAPI.register(userData);
+      const { token, user } = response.data;
       
-      dispatch({ type: 'LOGOUT' }); // Don't auto-login after registration
+      // Save token and user data for immediate login
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      dispatch({ 
+        type: 'LOGIN_SUCCESS', 
+        payload: { token, user } 
+      });
       
       return { 
         success: true, 
