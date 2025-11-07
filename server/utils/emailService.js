@@ -27,7 +27,7 @@ const sendConfirmationEmail = async (email, token, name) => {
 
     
     const msg = {
-      to: "hamzasanramon@gmail.com",
+      to: email,
       from: {
         email: process.env.EMAIL_USER || 'noreply@ilmplus.com',
         name: 'ILM+'
