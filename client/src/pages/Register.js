@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Mail } from 'lucide-react';
@@ -20,8 +20,15 @@ const Register = () => {
   });
   const [errors, setErrors] = useState({});
   
-  const { register, loading } = useAuth();
+  const { register, loading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  // Redirect to dashboard if already authenticated (after successful registration)
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -81,11 +88,8 @@ const Register = () => {
     });
 
     if (result.success) {
-      toast.success('Registration successful! Redirecting to dashboard...');
-      // Redirect to dashboard after successful registration
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 1000);
+      toast.success('Registration successful! Welcome to ILM+');
+      // The useEffect will handle the redirect when isAuthenticated becomes true
     } else {
       toast.error(result.error);
     }
